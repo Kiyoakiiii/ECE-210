@@ -1,26 +1,17 @@
---- 
-# Tiny Tapeout project information
+---
 project:
-  [cite_start]title:        "Adaptive Leaky Integrate-and-Fire Neuron"      # Short, descriptive name for your project [cite: 97]
-  [cite_start]author:       "Hanwen Chen"                                   # Your name [cite: 98]
-  slack_handle: ""                                              # Optional slack handle
-  description:  "A brain-inspired digital Adaptive Leaky Integrate-and-Fire (ALIF) neuron with dynamic threshold adaptation." # 1-3 sentence summary [cite: 99]
-  language:     "Verilog" 
-  clock_hz:     0       
-
-  # How many tiles your design occupies? A single tile is about 160x116 um.
-  tiles: "1x1"          
-
-  # The exact name of your top-level Verilog module [cite: 100]
-  top_module:   "tt_um_alif"
-
-  # List of all Verilog source files needed to build your design [cite: 101]
+  title: "Adaptive Leaky Integrate-and-Fire Neuron"
+  author: "Hanwen Chen"
+  slack_handle: ""
+  description: "A digital Adaptive Leaky Integrate-and-Fire (ALIF) neuron with dynamic threshold."
+  language: "Verilog"
+  clock_hz: 0
+  tiles: "1x1"
+  top_module: "tt_um_alif"
   source_files:
     - "project.v"
 
-# Mapping of logical signals to physical TinyTapeout pins [cite: 102]
 pinout:
-  # Inputs
   ui[0]: "Synaptic_In_0"
   ui[1]: "Synaptic_In_1"
   ui[2]: "Synaptic_In_2"
@@ -29,8 +20,6 @@ pinout:
   ui[5]: "Synaptic_In_5"
   ui[6]: "Synaptic_In_6"
   ui[7]: "Synaptic_In_7"
-
-  # Outputs
   uo[0]: "Spike_Out"
   uo[1]: "Theta_bit1"
   uo[2]: "Theta_bit2"
@@ -39,8 +28,6 @@ pinout:
   uo[5]: "Theta_bit5"
   uo[6]: "Theta_bit6"
   uo[7]: "Theta_bit7"
-
-  # Bidirectional pins (Unused in our design)
   uio[0]: "Unused"
   uio[1]: "Unused"
   uio[2]: "Unused"
