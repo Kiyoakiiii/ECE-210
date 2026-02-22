@@ -1,4 +1,6 @@
 ---
+yaml_version: 6
+
 project:
   title: "Adaptive Leaky Integrate-and-Fire Neuron"
   author: "Hanwen Chen"
