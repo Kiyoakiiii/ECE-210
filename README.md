@@ -1,42 +1,20 @@
-![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
+# ECE-210 Brain-Inspired Chip Design: Adaptive Leaky Integrate-and-Fire (ALIF) Neuron
 
-# Tiny Tapeout Verilog Project Template
+## Project Overview
+This project implements a digital neuromorphic circuit based on the Adaptive Leaky Integrate-and-Fire (ALIF) neuron model. It was designed for the ECE-210 chip design assignment. While a standard LIF neuron uses a static threshold for spike generation, this ALIF design introduces biological adaptation: the firing threshold dynamically increases immediately after a spike is emitted and exponentially decays back to a baseline over time. This prevents hyper-excitability and models the biological refractory period and fatigue.
 
-- [Read the documentation for project](docs/info.md)
+## How it Works
+The core logic (`src/project.v`) contains an 8-bit membrane potential register and an 8-bit dynamic threshold register. 
+1. **Integration:** The 8-bit input (`ui_in`) represents incoming synaptic current, which is added to the membrane potential every clock cycle.
+2. **Leak:** A hardware-efficient right-shift (`membrane_v >> 3`) acts as the leak factor, slowly draining the membrane potential.
+3. **Spike Generation:** When the membrane potential exceeds the dynamic threshold, a spike is emitted on `uo_out[0]`.
+4. **Adaptation:** Upon spiking, the membrane potential resets to 0, and the threshold increases by a fixed step. If no spike occurs, the threshold slowly leaks back to its base value.
 
-## What is Tiny Tapeout?
+## Pinout
+* **Inputs (`ui_in`)**: 8-bit Synaptic Current Input
+* **Outputs (`uo_out`)**: 
+  * `uo_out[0]`: Spike Output
+  * `uo_out[7:1]`: Top 7 bits of the dynamic threshold (for observability)
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
-
-To learn more and get started, visit https://tinytapeout.com.
-
-## Set up your Verilog project
-
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
-
-The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
-
-## Enable GitHub actions to build the results page
-
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
-
-## Resources
-
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
-
-## What next?
-
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+## Verification
+The design includes a cocotb testbench (`test/test.py`) that injects constant current and verifies the membrane potential accumulation, spike firing, and threshold adaptation over 200 clock cycles.
